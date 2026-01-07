@@ -53,9 +53,9 @@ export const homePage = (page: Page) => ({
         await page.getByRole('link', { name: '랭킹' }).click();
     },
 
-    // 주방소품 6 클릭
+    // 랭킹 아이템 클릭
     async selectKitchenSupplies6() {
-        await page.getByRole('link', { name: '주방소품 6' }).click();
+        await page.locator('xpath=//*[@id="tabpanel1"]/ul/li[14]/div/a').click();
     },
 
     // 주문서 페이지 확인

@@ -27,12 +27,15 @@ export async function getTestCases(spreadsheetId: string) {
   }));
 }
 
-export async function updateTestResult(row: any, data: { result: string, img: string, checkNo: string }) {
+export async function updateTestResult(row: any, data: { result: string, img: string, jiraUrl: string, checkNo: string }) {
   // 4. 최신 버전에서는 row.set('컬럼명', 값) 방식을 사용합니다.
   row.set('Result', data.result);
   row.set('IMG', data.img);
   row.set('Check NO', data.checkNo);
+  // JiraUrl 컬럼에 데이터 기록 (데이터가 없을 경우 빈 값)
+  row.set('JiraUrl', `=HYPERLINK("${data.jiraUrl}", "티켓 바로가기")`);
   row.set('Check Time', new Date().toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' }));
   
   await row.save();
 }
+

@@ -1,21 +1,20 @@
 import { google } from 'googleapis';
 import fs from 'fs';
 
-// 1. keyFile 대신 credentials 설정을 사용해야 합니다.
-const auth = new google.auth.GoogleAuth({
-  credentials: {
-    client_email: process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL,
-    private_key: process.env.GOOGLE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
-  },
-  // 스코프도 드라이브 업로드를 위해 명시
-  scopes: ['https://www.googleapis.com/auth/drive.file'],
+// OAuth2 클라이언트 설정
+const oauth2Client = new google.auth.OAuth2(
+  process.env.GOOGLE_CLIENT_ID,
+  process.env.GOOGLE_CLIENT_SECRET
+);
+
+oauth2Client.setCredentials({
+  refresh_token: process.env.GOOGLE_REFRESH_TOKEN,
 });
 
-const drive = google.drive({ version: 'v3', auth });
+const drive = google.drive({ version: 'v3', auth: oauth2Client });
 
 export async function uploadScreenshot(filePath: string, fileName: string) {
   try {
-    // 파일 존재 여부 확인
     if (!fs.existsSync(filePath)) {
       console.error(`❌ 업로드 실패: 로컬 파일 없음 -> ${filePath}`);
       return null;
@@ -23,7 +22,9 @@ export async function uploadScreenshot(filePath: string, fileName: string) {
 
     const fileMetadata = {
       name: fileName,
-      parents: ['1QGEKmJK9p1Cn8v8uHP5JniWUkuUfKGEC'], // 폴더 ID
+      // 본인 드라이브의 폴더 ID를 넣으세요. 
+      // (내 드라이브에 만든 폴더이므로 별도의 '공유' 작업은 이제 안 해도 됩니다!)
+      parents: ['1QGEKmJK9p1Cn8v8uHP5JniWUkuUfKGEC'], 
     };
     
     const media = {
@@ -31,32 +32,27 @@ export async function uploadScreenshot(filePath: string, fileName: string) {
       body: fs.createReadStream(filePath),
     };
 
-    console.log(`📤 드라이브 업로드 시작: ${fileName}...`);
+    console.log(`📤 OAuth 권한으로 드라이브 업로드 시작: ${fileName}...`);
     
     const file = await drive.files.create({
       requestBody: fileMetadata,
       media: media,
       fields: 'id, webViewLink',
-      // 핵심 옵션: 공유 드라이브나 공유 폴더 접근 권한 허용
-      supportsAllDrives: true, 
-      keepRevisionForever: true,
-    } as any); // 타입 에러 방지용 as any
+    });
 
-    // 권한 설정 (시트에서 클릭 시 바로 보이게 함)
+    // 시트에서 누구나 볼 수 있게 공유 권한만 추가 (선택 사항)
     await drive.permissions.create({
       fileId: file.data.id!,
       requestBody: {
         role: 'reader',
         type: 'anyone',
       },
-      supportsAllDrives: true,
-      ignoreDefaultVisibility: true,
-    } as any);
+    });
 
-    console.log(`✅ 업로드 성공: ${file.data.webViewLink}`);
+    console.log(`✅ 업로드 성공! 링크: ${file.data.webViewLink}`);
     return file.data.webViewLink;
   } catch (error: any) {
-    console.error('❌ 드라이브 업로드 상세 에러:', error.message);
+    console.error('❌ 드라이브 업로드 최종 에러:', error.message);
     return null;
   }
 }
