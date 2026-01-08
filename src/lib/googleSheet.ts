@@ -16,7 +16,7 @@ export async function getTestCases(spreadsheetId: string) {
   const doc = new GoogleSpreadsheet(spreadsheetId, serviceAccountAuth);
   
   await doc.loadInfo();
-  const rows = await doc.sheetsByIndex[0].getRows();
+  const rows = await doc.sheetsByIndex[1].getRows();
   
   return rows.map(row => ({
     // 3. 최신 버전은 row.get('컬럼명') 또는 row._rawData 사용을 권장하지만 
@@ -32,8 +32,13 @@ export async function updateTestResult(row: any, data: { result: string, img: st
   row.set('Result', data.result);
   row.set('IMG', data.img);
   row.set('Check NO', data.checkNo);
-  // JiraUrl 컬럼에 데이터 기록 (데이터가 없을 경우 빈 값)
-  row.set('JiraUrl', `=HYPERLINK("${data.jiraUrl}", "티켓 바로가기")`);
+  // ✅ 조건부 로직 추가: jiraUrl이 있을 때만 하이퍼링크 생성
+  if (data.jiraUrl && data.jiraUrl.startsWith('http')) {
+    row.set('JiraUrl', `=HYPERLINK("${data.jiraUrl}", "티켓 바로가기")`);
+  } else {
+    // 성공(True)이거나 Jira 생성이 안 된 경우 빈 값으로 설정
+    row.set('JiraUrl', ''); 
+  }
   row.set('Check Time', new Date().toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' }));
   
   await row.save();

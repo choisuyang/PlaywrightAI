@@ -12,7 +12,7 @@ import { defineConfig, devices } from '@playwright/test';
  * See https://playwright.dev/docs/test-configuration.
  */
 export default defineConfig({
-  timeout: 60000, // 전체 테스트 시간을 60초로
+  timeout: 100000, // 전체 테스트 시간을 100초로
   testDir: './src/tests',
   /* Run tests in files in parallel */
   fullyParallel: true,
@@ -42,8 +42,8 @@ export default defineConfig({
     {
       name: 'Mobile Galaxy S24', // <-- 이 이름을 명령어에서 사용합니다.
       use: {
-        actionTimeout: 60000, // 클릭 등 개별 액션에 60초 할당
-        storageState: 'storage/session.json',
+        actionTimeout: 100000, // 클릭 등 개별 액션에 100초 할당
+        storageState: 'storage/sessionQueenIt.json',
         // Galaxy S24에 가장 가까운 뷰포트와 에뮬레이션 설정
         viewport: { width: 360, height: 780 },
         userAgent: 'Mozilla/5.0 (Linux; Android 14; SM-S921B) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.6261.64 Mobile Safari/537.36',

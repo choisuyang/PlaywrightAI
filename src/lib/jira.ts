@@ -36,13 +36,6 @@ export async function createJiraIssue(tcId: string, errorMessage: string, driveL
   };
 
   try {
-    // const response = await axios.post(
-    //   `${process.env.JIRA_DOMAIN}/rest/api/3/issue`,
-    //   data,
-    //   { headers: { 'Authorization': `Basic ${auth}`, 'Content-Type': 'application/json' } }
-    // );
-    // console.log(`🎫 Jira 티켓 생성 완료: ${response.data.key}`);
-    // return response.data.key;
     const response = await axios.post(
       `${process.env.JIRA_DOMAIN}/rest/api/3/issue`,
       data,
