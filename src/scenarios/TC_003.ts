@@ -11,11 +11,11 @@ export async function run(page: Page) {
     await queenIt.selectMultipleOptions();
     await queenIt.clickBuyImmediately();
     await queenIt.verifyOrderTitle('주문하기');
-    // await queenIt.selectMaxDiscountOff();
+    await queenIt.selectMaxDiscountOff();
     // // await queenIt.clickFinalPayment();
     // // await queenIt.clickPopupReject();
-    // await queenIt.clickFinalPayment2();
-    // await queenIt.closeOkayPopup();
-    // await queenIt.verifyOrderComplete();
+    await queenIt.clickFinalPayment2();
+    await queenIt.closeOkayPopup();
+    await queenIt.verifyOrderComplete();
     
 }
