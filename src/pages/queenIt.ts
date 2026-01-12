@@ -233,6 +233,19 @@ export const queenit = (page: Page) => ({
         await expect(orderCompleteTitle).toHaveText('주문 완료');
 
         console.log('✅ 테스트 성공: 주문 완료 확인되었습니다.');
+    },
+
+    // 골프 카테고리 선택
+    async clickCategoryGolf() {
+        const golfCategory = await page.locator('.css-8j52bx', { hasText: '골프' }).first();
+
+        await golfCategory.waitFor({ state: 'visible' });
+        await golfCategory.click();
+    },
+
+    // 골프 타이틀 확인
+    async verifyGolfTitle(keyword: string) {
+        await expect(page.locator('.MuiTypography-root .css-3i62ga')).toHaveText('신발');
     }
 
 
