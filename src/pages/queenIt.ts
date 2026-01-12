@@ -185,6 +185,8 @@ export const queenit = (page: Page) => ({
         console.log('팝업 창 타이틀 ===>', title);
 
         // // 3. 전체동의 버튼 선택
+        await page.waitForTimeout(500);
+        
         await page.locator('#chk_all').dispatchEvent('click');
 
         // 1. 해당 요소로 마우스를 이동 (Hover) - 중요!
