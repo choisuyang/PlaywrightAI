@@ -5,6 +5,7 @@ export async function run(page: Page) {
   const queenIt = queenit(page);
     await queenIt.navigate();
     await queenIt.clickCategoryMen();
+    await queenIt.clickClosePopup();
     await queenIt.selectBestProduct();
     await queenIt.clickBuyNow();
     await queenIt.selectMultipleOptions();

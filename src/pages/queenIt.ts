@@ -79,6 +79,20 @@ export const queenit = (page: Page) => ({
         await bestItem.click();
     },
 
+    // 닫기 팝업 버튼 클릭
+    async clickClosePopup() {
+        // 1. 버튼 로케이터 정의
+        const closeButton = page.locator('button.css-1a4ftm5');
+
+        // 2. 요소가 1개 이상 존재하는지 확인
+        if (await closeButton.count() > 0) {
+            await closeButton.click();
+            console.log("버튼을 클릭했습니다.");
+        } else {
+            console.log("버튼이 없어 패스합니다.");
+        }
+    },
+
     // 다중 옵션 선택
     async selectMultipleOptions() {
         // 기준이 되는 부모 요소 정의
