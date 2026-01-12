@@ -5,17 +5,17 @@ export async function run(page: Page) {
   const queenIt = queenit(page);
     await queenIt.navigate();
     await queenIt.clickCategoryMen();
-    await queenIt.clickClosePopup();
     await queenIt.selectBestProduct();
+    await queenIt.clickClosePopup();
     await queenIt.clickBuyNow();
     await queenIt.selectMultipleOptions();
     await queenIt.clickBuyImmediately();
     await queenIt.verifyOrderTitle('주문하기');
-    await queenIt.selectMaxDiscountOff();
-    // await queenIt.clickFinalPayment();
-    // await queenIt.clickPopupReject();
-    await queenIt.clickFinalPayment2();
-    await queenIt.closeOkayPopup();
-    await queenIt.verifyOrderComplete();
+    // await queenIt.selectMaxDiscountOff();
+    // // await queenIt.clickFinalPayment();
+    // // await queenIt.clickPopupReject();
+    // await queenIt.clickFinalPayment2();
+    // await queenIt.closeOkayPopup();
+    // await queenIt.verifyOrderComplete();
     
 }

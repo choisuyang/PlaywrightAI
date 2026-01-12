@@ -81,22 +81,25 @@ export const queenit = (page: Page) => ({
 
     // 닫기 팝업 버튼 클릭
     async clickClosePopup() {
-        // 1. 로케이터 설정 (클래스명 + 닫기 라벨)
-        const closeButton = page.locator('button.css-1a4ftm5');
+        // 1. 클래스명 대신 '닫기'라는 라벨을 가진 버튼을 정확히 타겟팅
+        const closeButton = page.locator('button[aria-label="닫기"]');
 
         try {
-            // 2. 최대 7초(7000ms) 동안 요소가 DOM에 나타나기를 기다립니다.
-            // 'attached'는 요소가 생길 때까지 기다리며, 타임아웃 발생 시 catch로 넘어갑니다.
-            await closeButton.waitFor({ state: 'attached', timeout: 7000 });
+            // 2. 버튼이 화면에 완전히 보일 때까지 대기 (최대 10초)
+            // 모달의 transition 애니메이션이 끝날 때까지 기다려줍니다.
+            await closeButton.waitFor({ state: 'visible', timeout: 10000 });
 
-            // 3. 요소가 존재한다면 클릭
-            if (await closeButton.isVisible()) {
-                await closeButton.click();
-                console.log("닫기 버튼 클릭 완료");
-            }
+            // 3. 텍스트 확인 (디버깅용)
+            const text = await closeButton.innerText();
+            console.log('----> 버튼 텍스트 확인:', text);
+
+            // 4. 클릭 실행
+            // actionability 체크(가려짐 등)를 우회하기 위해 force: true를 사용할 수 있습니다.
+            await closeButton.click({ force: true });
+            console.log("닫기 버튼 클릭 성공");
+
         } catch (error) {
-            // 4. 7초 안에 안 나타나면 에러를 던지지 않고 그냥 패스
-            console.log("6~7초 대기했으나 팝업이 없어 패스합니다.");
+            console.log("팝업 닫기 실패 또는 팝업 없음:", error);
         }
     },
 

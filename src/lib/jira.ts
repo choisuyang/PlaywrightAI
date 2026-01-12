@@ -31,7 +31,7 @@ export async function createJiraIssue(tcId: string, errorMessage: string, driveL
       reporter: {
       id: process.env.JIRA_ACCOUNT_ID
     },
-      issuetype: { name: "Bug" } // 또는 "결함"
+      issuetype: { name: "BUG" } // 또는 "결함"
     }
   };
 
