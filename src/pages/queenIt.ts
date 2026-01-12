@@ -81,15 +81,22 @@ export const queenit = (page: Page) => ({
 
     // 닫기 팝업 버튼 클릭
     async clickClosePopup() {
-        // 1. 버튼 로케이터 정의
+        // 1. 로케이터 설정 (클래스명 + 닫기 라벨)
         const closeButton = page.locator('button.css-1a4ftm5');
 
-        // 2. 요소가 1개 이상 존재하는지 확인
-        if (await closeButton.count() > 0) {
-            await closeButton.click();
-            console.log("버튼을 클릭했습니다.");
-        } else {
-            console.log("버튼이 없어 패스합니다.");
+        try {
+            // 2. 최대 7초(7000ms) 동안 요소가 DOM에 나타나기를 기다립니다.
+            // 'attached'는 요소가 생길 때까지 기다리며, 타임아웃 발생 시 catch로 넘어갑니다.
+            await closeButton.waitFor({ state: 'attached', timeout: 7000 });
+
+            // 3. 요소가 존재한다면 클릭
+            if (await closeButton.isVisible()) {
+                await closeButton.click();
+                console.log("닫기 버튼 클릭 완료");
+            }
+        } catch (error) {
+            // 4. 7초 안에 안 나타나면 에러를 던지지 않고 그냥 패스
+            console.log("6~7초 대기했으나 팝업이 없어 패스합니다.");
         }
     },
 
