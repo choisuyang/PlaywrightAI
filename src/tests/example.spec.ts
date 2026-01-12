@@ -33,30 +33,30 @@ test('통합 실행 엔진', async ({ page }) => {
       const localPath = `test-results/screenshots/${tc.id}.png`;
 
       // 에러 발생 시 처리 로직
-      // if (!page.isClosed()) {
-      //   try {
-      //     // 1. 먼저 로컬에 스크린샷 저장
-      //     await page.screenshot({ path: localPath, timeout: 5000 });
-      //     console.log(`${tc.id} 스크린샷 저장 완료: ${localPath}`);
+      if (!page.isClosed()) {
+        try {
+          // 1. 먼저 로컬에 스크린샷 저장
+          await page.screenshot({ path: localPath, timeout: 5000 });
+          console.log(`${tc.id} 스크린샷 저장 완료: ${localPath}`);
 
-      //     // 2. 저장된 스크린샷을 구글 드라이브로 업로드
-      //     const driveLink = await uploadScreenshot(localPath, `${tc.id}_${Date.now()}.png`);
+          // 2. 저장된 스크린샷을 구글 드라이브로 업로드
+          const driveLink = await uploadScreenshot(localPath, `${tc.id}_${Date.now()}.png`);
           
-      //     if (driveLink) {
-      //       console.log(`${tc.id} 드라이브 업로드 성공: ${driveLink}`);
-      //       screenshotPath = driveLink; 
+          if (driveLink) {
+            console.log(`${tc.id} 드라이브 업로드 성공: ${driveLink}`);
+            screenshotPath = driveLink; 
 
-      //       // 3. Jira 티켓 생성 및 URL 획득 (이미 선언된 jiraUrl 변수에 할당)
-      //       console.log(`🎫 Jira 티켓 생성을 시작합니다...`);
-      //       jiraUrl = await createJiraIssue(tc.id, errorMsg, driveLink) || ''; 
-      //     } else {
-      //       screenshotPath = localPath; 
-      //     }
-      //   } catch (screenshotError) {
-      //     console.error(`${tc.id} 스크린샷/업로드 단계 실패:`, screenshotError);
-      //     screenshotPath = 'Screenshot/Upload Failed';
-      //   }
-      // }
+            // 3. Jira 티켓 생성 및 URL 획득 (이미 선언된 jiraUrl 변수에 할당)
+            console.log(`🎫 Jira 티켓 생성을 시작합니다...`);
+            jiraUrl = await createJiraIssue(tc.id, errorMsg, driveLink) || ''; 
+          } else {
+            screenshotPath = localPath; 
+          }
+        } catch (screenshotError) {
+          console.error(`${tc.id} 스크린샷/업로드 단계 실패:`, screenshotError);
+          screenshotPath = 'Screenshot/Upload Failed';
+        }
+      }
     }
 
     // 결과 업데이트 (이제 jiraUrl 변수에 접근이 가능합니다)
