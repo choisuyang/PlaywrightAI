@@ -16,7 +16,7 @@ export async function getTestCases(spreadsheetId: string) {
   const doc = new GoogleSpreadsheet(spreadsheetId, serviceAccountAuth);
   
   await doc.loadInfo();
-  const rows = await doc.sheetsByIndex[1].getRows();
+  const rows = await doc.sheetsByIndex[0].getRows();
   
   return rows.map(row => ({
     // 3. 최신 버전은 row.get('컬럼명') 또는 row._rawData 사용을 권장하지만 

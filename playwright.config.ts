@@ -43,7 +43,7 @@ export default defineConfig({
       name: 'Mobile Galaxy S24', // <-- 이 이름을 명령어에서 사용합니다.
       use: {
         actionTimeout: 100000, // 클릭 등 개별 액션에 100초 할당
-        storageState: 'storage/sessionQueenIt.json',
+        storageState: 'storage/session.json',
         // Galaxy S24에 가장 가까운 뷰포트와 에뮬레이션 설정
         viewport: { width: 360, height: 780 },
         userAgent: 'Mozilla/5.0 (Linux; Android 14; SM-S921B) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.6261.64 Mobile Safari/537.36',
