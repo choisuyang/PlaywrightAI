@@ -24,7 +24,7 @@ test('모바일 앱 열고 대기', async () => {
     // '편성표'라는 텍스트를 가진 요소 중 두 번째(인덱스 1) 요소를 선택
     const scheduleBtn = await app.$('android=new UiSelector().text("편성표").instance(1)');
 
-    // 요소가 보일 때까지 대기 후 클릭
+    // 요소가 보일 때까지 대기 후 클릭합니다.
     await scheduleBtn.waitForDisplayed({ timeout: 5000 });
     await scheduleBtn.click();
 
